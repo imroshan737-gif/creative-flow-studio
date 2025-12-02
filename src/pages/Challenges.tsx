@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -13,84 +13,100 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useUserHobbies } from '@/hooks/useUserHobbies';
+import { useChallengeCompletion } from '@/hooks/useChallengeCompletion';
 
 const dailyChallenges = [
-  {
-    id: 'd1',
-    title: 'Morning Melody Maker',
-    description: 'Compose a cheerful 30-second tune to kickstart your day',
-    category: 'music' as const,
-    duration: 10,
-    difficulty: 'beginner' as const,
-    points: 50,
-    icon: Music,
-  },
-  {
-    id: 'd2',
-    title: 'Color Emotion Study',
-    description: 'Paint a feeling using only warm colors',
-    category: 'art' as const,
-    duration: 15,
-    difficulty: 'beginner' as const,
-    points: 75,
-    icon: Palette,
-  },
-  {
-    id: 'd3',
-    title: 'Flash Fiction',
-    description: 'Write a complete story in exactly 50 words',
-    category: 'writing' as const,
-    duration: 10,
-    difficulty: 'intermediate' as const,
-    points: 60,
-    icon: PenTool,
-  },
-  {
-    id: 'd4',
-    title: 'Rhythm Express',
-    description: 'Create a 20-second dance expressing joy',
-    category: 'dance' as const,
-    duration: 10,
-    difficulty: 'beginner' as const,
-    points: 50,
-    icon: Zap,
-  },
+  // Music challenges
+  { id: 'd1', title: 'Morning Melody Maker', description: 'Compose a cheerful 30-second tune to kickstart your day', category: 'music' as const, duration: 10, difficulty: 'beginner' as const, points: 50, icon: Music },
+  { id: 'd2', title: 'Harmony Builder', description: 'Create a 4-chord progression and explore variations', category: 'music' as const, duration: 15, difficulty: 'moderate' as const, points: 75, icon: Music },
+  { id: 'd3', title: 'Beat Master', description: 'Design a unique drum pattern with syncopation', category: 'music' as const, duration: 12, difficulty: 'expert' as const, points: 100, icon: Music },
+  
+  // Art challenges
+  { id: 'd4', title: 'Color Emotion Study', description: 'Paint a feeling using only warm colors', category: 'art' as const, duration: 15, difficulty: 'beginner' as const, points: 75, icon: Palette },
+  { id: 'd5', title: 'Abstract Expression', description: 'Create an abstract piece inspired by nature', category: 'art' as const, duration: 20, difficulty: 'moderate' as const, points: 90, icon: Palette },
+  { id: 'd6', title: 'Portrait Challenge', description: 'Sketch a detailed portrait from imagination', category: 'art' as const, duration: 25, difficulty: 'expert' as const, points: 120, icon: Palette },
+  
+  // Writing challenges
+  { id: 'd7', title: 'Flash Fiction', description: 'Write a complete story in exactly 50 words', category: 'writing' as const, duration: 10, difficulty: 'beginner' as const, points: 60, icon: PenTool },
+  { id: 'd8', title: 'Character Development', description: 'Create a detailed character profile with backstory', category: 'writing' as const, duration: 15, difficulty: 'moderate' as const, points: 80, icon: PenTool },
+  { id: 'd9', title: 'Plot Twist Master', description: 'Write a 200-word story with an unexpected ending', category: 'writing' as const, duration: 18, difficulty: 'expert' as const, points: 110, icon: PenTool },
+  
+  // Dance challenges
+  { id: 'd10', title: 'Rhythm Express', description: 'Create a 20-second dance expressing joy', category: 'dance' as const, duration: 10, difficulty: 'beginner' as const, points: 50, icon: Zap },
+  { id: 'd11', title: 'Freestyle Flow', description: 'Choreograph a 1-minute routine to your favorite song', category: 'dance' as const, duration: 15, difficulty: 'moderate' as const, points: 85, icon: Zap },
+  { id: 'd12', title: 'Contemporary Fusion', description: 'Blend two dance styles into one routine', category: 'dance' as const, duration: 20, difficulty: 'expert' as const, points: 115, icon: Zap },
+  
+  // Coding challenges
+  { id: 'd13', title: 'Algorithm Basics', description: 'Solve a simple sorting algorithm problem', category: 'coding' as const, duration: 15, difficulty: 'beginner' as const, points: 70, icon: Zap },
+  { id: 'd14', title: 'API Integration', description: 'Build a mini app that fetches and displays data', category: 'coding' as const, duration: 20, difficulty: 'moderate' as const, points: 95, icon: Zap },
+  { id: 'd15', title: 'System Design', description: 'Design a scalable architecture for a chat app', category: 'coding' as const, duration: 25, difficulty: 'expert' as const, points: 130, icon: Zap },
+  
+  // Photography challenges
+  { id: 'd16', title: 'Golden Hour Capture', description: 'Take 5 photos during sunrise or sunset', category: 'photography' as const, duration: 10, difficulty: 'beginner' as const, points: 55, icon: Palette },
+  { id: 'd17', title: 'Macro World', description: 'Capture intricate details of small objects', category: 'photography' as const, duration: 15, difficulty: 'moderate' as const, points: 80, icon: Palette },
+  { id: 'd18', title: 'Portrait Mastery', description: 'Create a professional portrait with lighting', category: 'photography' as const, duration: 20, difficulty: 'expert' as const, points: 105, icon: Palette },
+  
+  // Fitness challenges
+  { id: 'd19', title: 'Morning Energy Boost', description: 'Complete a 10-minute cardio workout', category: 'fitness' as const, duration: 10, difficulty: 'beginner' as const, points: 50, icon: Zap },
+  { id: 'd20', title: 'Core Strength Builder', description: 'Perform targeted ab exercises for 15 minutes', category: 'fitness' as const, duration: 15, difficulty: 'moderate' as const, points: 75, icon: Zap },
+  { id: 'd21', title: 'HIIT Intensity', description: 'Complete a high-intensity interval training session', category: 'fitness' as const, duration: 20, difficulty: 'expert' as const, points: 100, icon: Zap },
+  
+  // Cooking challenges
+  { id: 'd22', title: 'Quick Breakfast', description: 'Prepare a healthy breakfast in 10 minutes', category: 'cooking' as const, duration: 10, difficulty: 'beginner' as const, points: 55, icon: Palette },
+  { id: 'd23', title: 'International Dish', description: 'Cook a recipe from a cuisine you\'ve never tried', category: 'cooking' as const, duration: 25, difficulty: 'moderate' as const, points: 90, icon: Palette },
+  { id: 'd24', title: 'Gourmet Challenge', description: 'Create a restaurant-quality 3-course meal', category: 'cooking' as const, duration: 30, difficulty: 'expert' as const, points: 125, icon: Palette },
+  
+  // Gaming challenges
+  { id: 'd25', title: 'Speed Run Practice', description: 'Complete a game level as fast as possible', category: 'gaming' as const, duration: 15, difficulty: 'beginner' as const, points: 60, icon: Zap },
+  { id: 'd26', title: 'Strategy Master', description: 'Win a match using an unconventional strategy', category: 'gaming' as const, duration: 20, difficulty: 'moderate' as const, points: 85, icon: Zap },
+  { id: 'd27', title: 'Tournament Ready', description: 'Achieve a personal best score in competitive mode', category: 'gaming' as const, duration: 25, difficulty: 'expert' as const, points: 110, icon: Zap },
+  
+  // Design challenges
+  { id: 'd28', title: 'Logo Concept', description: 'Design a minimal logo for a fictional brand', category: 'design' as const, duration: 15, difficulty: 'beginner' as const, points: 65, icon: Palette },
+  { id: 'd29', title: 'UI Component', description: 'Create a complete user interface component set', category: 'design' as const, duration: 20, difficulty: 'moderate' as const, points: 90, icon: Palette },
+  { id: 'd30', title: 'Brand Identity', description: 'Design a full brand identity system with guidelines', category: 'design' as const, duration: 30, difficulty: 'expert' as const, points: 135, icon: Palette },
 ];
 
 const weeklyChallenges = [
-  {
-    id: 'w1',
-    title: 'Symphony Builder',
-    description: 'Create a full 2-minute composition across 7 days',
-    category: 'music' as const,
-    totalDays: 7,
-    currentDay: 0,
-    difficulty: 'advanced' as const,
-    points: 500,
-    icon: Music,
-  },
-  {
-    id: 'w2',
-    title: 'Masterpiece Journey',
-    description: 'Complete a detailed artwork through daily progress',
-    category: 'art' as const,
-    totalDays: 7,
-    currentDay: 0,
-    difficulty: 'advanced' as const,
-    points: 600,
-    icon: Palette,
-  },
-  {
-    id: 'w3',
-    title: 'Short Story Saga',
-    description: 'Write a 1000-word story, 150 words per day',
-    category: 'writing' as const,
-    totalDays: 7,
-    currentDay: 0,
-    difficulty: 'intermediate' as const,
-    points: 450,
-    icon: PenTool,
-  },
+  // Music
+  { id: 'w1', title: 'Symphony Builder', description: 'Create a full 2-minute composition across 7 days', category: 'music' as const, totalDays: 7, currentDay: 0, difficulty: 'expert' as const, points: 500, icon: Music },
+  { id: 'w2', title: 'Album Project', description: 'Produce 5 different tracks exploring various genres', category: 'music' as const, totalDays: 7, currentDay: 0, difficulty: 'moderate' as const, points: 400, icon: Music },
+  
+  // Art
+  { id: 'w3', title: 'Masterpiece Journey', description: 'Complete a detailed artwork through daily progress', category: 'art' as const, totalDays: 7, currentDay: 0, difficulty: 'expert' as const, points: 600, icon: Palette },
+  { id: 'w4', title: 'Style Evolution', description: 'Create one piece each day in a different art style', category: 'art' as const, totalDays: 7, currentDay: 0, difficulty: 'moderate' as const, points: 450, icon: Palette },
+  
+  // Writing
+  { id: 'w5', title: 'Short Story Saga', description: 'Write a 1000-word story, 150 words per day', category: 'writing' as const, totalDays: 7, currentDay: 0, difficulty: 'moderate' as const, points: 450, icon: PenTool },
+  { id: 'w6', title: 'Novel Chapter', description: 'Complete a full chapter of a novel across the week', category: 'writing' as const, totalDays: 7, currentDay: 0, difficulty: 'expert' as const, points: 550, icon: PenTool },
+  
+  // Dance
+  { id: 'w7', title: 'Choreography Collection', description: 'Create a complete dance routine by adding daily', category: 'dance' as const, totalDays: 7, currentDay: 0, difficulty: 'moderate' as const, points: 420, icon: Zap },
+  { id: 'w8', title: 'Performance Ready', description: 'Master a complex routine for stage performance', category: 'dance' as const, totalDays: 7, currentDay: 0, difficulty: 'expert' as const, points: 520, icon: Zap },
+  
+  // Coding
+  { id: 'w9', title: 'Full Stack App', description: 'Build a complete web application from scratch', category: 'coding' as const, totalDays: 7, currentDay: 0, difficulty: 'expert' as const, points: 650, icon: Zap },
+  { id: 'w10', title: 'Algorithm Marathon', description: 'Solve different algorithm challenges each day', category: 'coding' as const, totalDays: 7, currentDay: 0, difficulty: 'moderate' as const, points: 480, icon: Zap },
+  
+  // Photography
+  { id: 'w11', title: 'Photo Series', description: 'Create a cohesive series telling a visual story', category: 'photography' as const, totalDays: 7, currentDay: 0, difficulty: 'moderate' as const, points: 430, icon: Palette },
+  { id: 'w12', title: 'Master Techniques', description: 'Practice a different advanced technique each day', category: 'photography' as const, totalDays: 7, currentDay: 0, difficulty: 'expert' as const, points: 530, icon: Palette },
+  
+  // Fitness
+  { id: 'w13', title: '7-Day Transformation', description: 'Complete progressive workouts building strength', category: 'fitness' as const, totalDays: 7, currentDay: 0, difficulty: 'moderate' as const, points: 410, icon: Zap },
+  { id: 'w14', title: 'Athletic Challenge', description: 'Train like an athlete with intense daily sessions', category: 'fitness' as const, totalDays: 7, currentDay: 0, difficulty: 'expert' as const, points: 510, icon: Zap },
+  
+  // Cooking
+  { id: 'w15', title: 'Culinary World Tour', description: 'Cook dishes from 7 different countries', category: 'cooking' as const, totalDays: 7, currentDay: 0, difficulty: 'moderate' as const, points: 470, icon: Palette },
+  { id: 'w16', title: 'Master Chef Journey', description: 'Perfect advanced cooking techniques daily', category: 'cooking' as const, totalDays: 7, currentDay: 0, difficulty: 'expert' as const, points: 580, icon: Palette },
+  
+  // Gaming
+  { id: 'w17', title: 'Skill Mastery', description: 'Improve rank through focused practice sessions', category: 'gaming' as const, totalDays: 7, currentDay: 0, difficulty: 'moderate' as const, points: 440, icon: Zap },
+  { id: 'w18', title: 'Pro Tournament Prep', description: 'Train for competitive esports readiness', category: 'gaming' as const, totalDays: 7, currentDay: 0, difficulty: 'expert' as const, points: 540, icon: Zap },
+  
+  // Design
+  { id: 'w19', title: 'Design System', description: 'Create a complete design system from scratch', category: 'design' as const, totalDays: 7, currentDay: 0, difficulty: 'expert' as const, points: 620, icon: Palette },
+  { id: 'w20', title: 'Portfolio Expansion', description: 'Add one polished project to portfolio daily', category: 'design' as const, totalDays: 7, currentDay: 0, difficulty: 'moderate' as const, points: 460, icon: Palette },
 ];
 
 const categoryColors = {
@@ -104,7 +120,9 @@ export default function Challenges() {
   const navigate = useNavigate();
   const startChallenge = useStore((state) => state.startChallenge);
   const { hobbies, loading: hobbiesLoading } = useUserHobbies();
+  const { getCompletedChallenges } = useChallengeCompletion();
   const [personalChallenges, setPersonalChallenges] = useState<any[]>([]);
+  const [completedChallengeIds, setCompletedChallengeIds] = useState<string[]>([]);
   const [newChallenge, setNewChallenge] = useState({
     title: '',
     description: '',
@@ -112,20 +130,29 @@ export default function Challenges() {
     duration: 10,
   });
 
-  // Filter challenges based on user's hobbies
+  // Load completed challenges
+  useEffect(() => {
+    async function loadCompletedChallenges() {
+      const completed = await getCompletedChallenges();
+      setCompletedChallengeIds(completed);
+    }
+    loadCompletedChallenges();
+  }, []);
+
+  // Filter challenges based on user's hobbies and completion status
   const userHobbyCategories = useMemo(() => {
     return new Set(hobbies.map(h => h.category.toLowerCase()));
   }, [hobbies]);
 
   const filteredDailyChallenges = useMemo(() => {
-    if (userHobbyCategories.size === 0) return dailyChallenges;
-    return dailyChallenges.filter(c => userHobbyCategories.has(c.category));
-  }, [userHobbyCategories]);
+    let filtered = userHobbyCategories.size === 0 ? dailyChallenges : dailyChallenges.filter(c => userHobbyCategories.has(c.category));
+    return filtered.filter(c => !completedChallengeIds.includes(c.id));
+  }, [userHobbyCategories, completedChallengeIds]);
 
   const filteredWeeklyChallenges = useMemo(() => {
-    if (userHobbyCategories.size === 0) return weeklyChallenges;
-    return weeklyChallenges.filter(c => userHobbyCategories.has(c.category));
-  }, [userHobbyCategories]);
+    let filtered = userHobbyCategories.size === 0 ? weeklyChallenges : weeklyChallenges.filter(c => userHobbyCategories.has(c.category));
+    return filtered.filter(c => !completedChallengeIds.includes(c.id));
+  }, [userHobbyCategories, completedChallengeIds]);
 
   const handleStartChallenge = (challenge: any) => {
     startChallenge(challenge);
@@ -179,6 +206,7 @@ export default function Challenges() {
                 </p>
               </GlassCard>
             ) : (
+              <>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {filteredDailyChallenges.map((challenge, index) => (
                 <motion.div
@@ -232,9 +260,15 @@ export default function Challenges() {
                     </div>
                   </GlassCard>
                 </motion.div>
-              ))}
-            </div>
-            )}
+               ))}
+             </div>
+              <GlassCard className="text-center py-8 mt-6">
+                <p className="text-muted-foreground text-lg">
+                  Not your hobby? Create your own challenges in <span className="text-primary font-semibold">'Personal Challenges'</span>
+                </p>
+              </GlassCard>
+              </>
+             )}
           </TabsContent>
 
           <TabsContent value="weekly" className="space-y-6">
@@ -248,9 +282,10 @@ export default function Challenges() {
                   Update your hobbies in profile settings to see relevant challenges
                 </p>
               </GlassCard>
-            ) : (
-              <div className="grid grid-cols-1 gap-6">
-                {filteredWeeklyChallenges.map((challenge, index) => (
+             ) : (
+               <>
+               <div className="grid grid-cols-1 gap-6">
+                 {filteredWeeklyChallenges.map((challenge, index) => (
                 <motion.div
                   key={challenge.id}
                   initial={{ opacity: 0, y: 20 }}
@@ -314,9 +349,15 @@ export default function Challenges() {
                     </div>
                   </GlassCard>
                 </motion.div>
-              ))}
-            </div>
-            )}
+               ))}
+             </div>
+              <GlassCard className="text-center py-8 mt-6">
+                <p className="text-muted-foreground text-lg">
+                  Not your hobby? Create your own challenges in <span className="text-primary font-semibold">'Personal Challenges'</span>
+                </p>
+              </GlassCard>
+              </>
+             )}
           </TabsContent>
 
           <TabsContent value="personal" className="space-y-6">

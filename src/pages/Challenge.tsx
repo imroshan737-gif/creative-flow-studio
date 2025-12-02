@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import GlassCard from '@/components/GlassCard';
 import { useStore } from '@/store/useStore';
 import { useNavigate } from 'react-router-dom';
+import { useChallengeCompletion } from '@/hooks/useChallengeCompletion';
 import { Play, Pause, StopCircle, Mic, RefreshCw, Sparkles, Clock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -15,6 +16,7 @@ export default function Challenge() {
   const endChallenge = useStore((state) => state.endChallenge);
   const setAudioLevel = useStore((state) => state.setAudioLevel);
   const navigate = useNavigate();
+  const { completeChallenge } = useChallengeCompletion();
   
   const [timeLeft, setTimeLeft] = useState(600); // 10 minutes
   const [isActive, setIsActive] = useState(false);
@@ -111,12 +113,17 @@ export default function Challenge() {
     }
   };
   
-  const handleEnd = () => {
+  const handleEnd = async () => {
     setShowFeedback(true);
     setIsActive(false);
     if (isRecording) {
       stopRecording();
       stopAudioMonitoring();
+    }
+    
+    // Mark challenge as completed
+    if (currentChallenge) {
+      await completeChallenge(currentChallenge.id, currentChallenge.points || 0);
     }
   };
   
