@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Sparkles, Mail, Lock, User, Chrome } from 'lucide-react';
+import { Sparkles, Mail, Lock, User } from 'lucide-react';
 import GlassCard from '@/components/GlassCard';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
@@ -36,7 +36,7 @@ export default function Auth() {
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn, signUp, signInWithGoogle } = useAuth();
+  const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -72,26 +72,6 @@ export default function Auth() {
     setLoading(false);
   };
 
-  const handleGoogleSignIn = async () => {
-    setLoading(true);
-    try {
-      const { error } = await signInWithGoogle();
-      if (error) {
-        toast({
-          title: 'Google Sign-In Failed',
-          description: error.message || 'Unable to sign in with Google. Please try again.',
-          variant: 'destructive',
-        });
-      }
-    } catch (error: any) {
-      toast({
-        title: 'Google Sign-In Failed',
-        description: error?.message || 'An unexpected error occurred.',
-        variant: 'destructive',
-      });
-    }
-    setLoading(false);
-  };
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -122,28 +102,6 @@ export default function Auth() {
         </div>
 
         <GlassCard className="p-6 space-y-6">
-          <Button
-            type="button"
-            variant="outline"
-            className="w-full glass hover:bg-background/50"
-            onClick={handleGoogleSignIn}
-            disabled={loading}
-          >
-            <Chrome className="w-5 h-5 mr-2" />
-            Continue with Google
-          </Button>
-
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-border" />
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-background/50 text-muted-foreground">
-                Or continue with email
-              </span>
-            </div>
-          </div>
-
           <form onSubmit={handleSubmit} className="space-y-4">
             <AnimatePresence mode="wait">
               {!isLogin && (

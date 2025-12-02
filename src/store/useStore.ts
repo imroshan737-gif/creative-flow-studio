@@ -16,9 +16,10 @@ interface Challenge {
   id: string;
   title: string;
   description: string;
-  category: 'music' | 'art' | 'writing' | 'dance';
-  duration: 10 | 15;
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  category: 'music' | 'art' | 'writing' | 'dance' | 'coding' | 'photography' | 'fitness' | 'cooking' | 'gaming' | 'design';
+  duration: number;
+  difficulty: 'beginner' | 'intermediate' | 'moderate' | 'advanced' | 'expert';
+  points?: number;
   prompt?: string;
 }
 
