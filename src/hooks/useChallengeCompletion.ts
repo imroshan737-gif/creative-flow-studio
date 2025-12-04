@@ -6,31 +6,21 @@ export function useChallengeCompletion() {
   const { user } = useAuth();
 
   const completeChallenge = async (challengeId: string, points: number, isPersonal: boolean = false) => {
-    if (!user) return;
+    if (!user) return false;
 
     try {
-      // For personal challenges, we need to create the challenge in the database first
-      let dbChallengeId = challengeId;
-      
-      if (isPersonal || !isValidUUID(challengeId)) {
-        // Create a personal challenge record in the challenges table
-        const { data: newChallenge, error: createError } = await supabase
-          .from('challenges')
-          .insert({
-            title: 'Personal Challenge',
-            description: 'User created personal challenge',
-            category: 'music',
-            difficulty: 'beginner',
-            type: 'personal',
-            points: points,
-            is_active: false, // Personal challenges shouldn't show in main lists
-          })
-          .select('id')
-          .single();
-
-        if (createError) throw createError;
-        dbChallengeId = newChallenge.id;
+      // Validate that challengeId is a valid UUID
+      if (!isValidUUID(challengeId)) {
+        console.error('Invalid challenge ID:', challengeId);
+        toast({
+          title: 'Error',
+          description: 'Invalid challenge. Please try a different challenge.',
+          variant: 'destructive',
+        });
+        return false;
       }
+
+      const dbChallengeId = challengeId;
 
       // Insert challenge completion record
       const { error: challengeError } = await supabase

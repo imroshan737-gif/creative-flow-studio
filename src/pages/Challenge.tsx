@@ -204,15 +204,25 @@ export default function Challenge() {
   const handleUploadAndComplete = async () => {
     if (!uploadedFile || !currentChallenge) return;
     
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      toast({
+        title: 'Error',
+        description: 'Please log in to upload files',
+        variant: 'destructive',
+      });
+      return;
+    }
+    
     setUploading(true);
     try {
-      // Upload to Supabase storage
+      // Upload to Supabase storage with user ID in path for RLS
       const fileExt = uploadedFile.name.split('.').pop();
-      const fileName = `${currentChallenge.id}_${Date.now()}.${fileExt}`;
+      const fileName = `${user.id}/submissions/${currentChallenge.id}_${Date.now()}.${fileExt}`;
       
       const { data, error } = await supabase.storage
-        .from('avatars') // Reusing existing bucket for now
-        .upload(`submissions/${fileName}`, uploadedFile);
+        .from('avatars')
+        .upload(fileName, uploadedFile);
       
       if (error) throw error;
       
@@ -294,9 +304,14 @@ export default function Challenge() {
               <p className="text-muted-foreground mb-2">
                 Share what you created and earn <span className="text-primary font-bold">25% bonus points!</span>
               </p>
-              <p className="text-sm text-muted-foreground mb-6">
-                Supported formats: MP3, MP4, PDF (Max 50MB)
-              </p>
+              <div className="glass p-3 rounded-lg mb-6 text-sm">
+                <p className="text-muted-foreground">
+                  <span className="font-medium text-foreground">Supported formats:</span> MP3, MP4, PDF
+                </p>
+                <p className="text-destructive font-medium mt-1">
+                  ⚠️ Maximum file size: 50MB - Do not exceed this limit
+                </p>
+              </div>
               
               <div className="mb-6">
                 <div className="flex justify-between text-sm mb-2">
