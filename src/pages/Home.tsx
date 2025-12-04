@@ -1,73 +1,56 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import GlassCard from '@/components/GlassCard';
-import { Flame, Sparkles, Clock, Trophy, Play, Star } from 'lucide-react';
+import { Flame, Sparkles, Clock, Trophy, Play, Star, ChevronDown, ChevronUp } from 'lucide-react';
 import { useStore } from '@/store/useStore';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { useUserHobbies } from '@/hooks/useUserHobbies';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useChallenges, Challenge } from '@/hooks/useChallenges';
 
-const mockChallenges = [
-  {
-    id: '1',
-    title: 'Morning Melody',
-    description: 'Create a 30-second uplifting tune to start your day',
-    category: 'music' as const,
-    duration: 10 as const,
-    difficulty: 'beginner' as const,
-    participants: 234,
-  },
-  {
-    id: '2',
-    title: 'Emotion in Color',
-    description: 'Express a feeling using only three colors',
-    category: 'art' as const,
-    duration: 10 as const,
-    difficulty: 'intermediate' as const,
-    participants: 189,
-  },
-  {
-    id: '3',
-    title: 'Micro Story',
-    description: 'Tell a complete story in exactly 100 words',
-    category: 'writing' as const,
-    duration: 15 as const,
-    difficulty: 'intermediate' as const,
-    participants: 312,
-  },
-  {
-    id: '4',
-    title: 'Flow Movement',
-    description: 'Choreograph 15 seconds of continuous motion',
-    category: 'dance' as const,
-    duration: 10 as const,
-    difficulty: 'beginner' as const,
-    participants: 156,
-  },
-];
-
-const categoryColors = {
+const categoryColors: Record<string, string> = {
   music: 'bg-primary/10 text-primary border-primary/20',
   art: 'bg-secondary/10 text-secondary border-secondary/20',
   writing: 'bg-accent/10 text-accent border-accent/20',
   dance: 'bg-primary/10 text-primary border-primary/20',
+  coding: 'bg-chart-1/10 text-chart-1 border-chart-1/20',
+  photography: 'bg-chart-2/10 text-chart-2 border-chart-2/20',
+  fitness: 'bg-chart-3/10 text-chart-3 border-chart-3/20',
+  cooking: 'bg-chart-4/10 text-chart-4 border-chart-4/20',
+  gaming: 'bg-chart-5/10 text-chart-5 border-chart-5/20',
+  design: 'bg-secondary/10 text-secondary border-secondary/20',
 };
+
+const motivationalQuotes = [
+  "Small daily improvements lead to stunning results.",
+  "Your hobby today is your legacy tomorrow.",
+  "Consistency beats intensity. Show up every day.",
+  "Every expert was once a beginner.",
+  "The secret to getting ahead is getting started.",
+  "Passion + Persistence = Progress.",
+  "Your creative spark can light up the world.",
+  "One challenge at a time, one day at a time.",
+];
 
 export default function Home() {
   const user = useStore((state) => state.user);
   const { user: authUser } = useAuth();
   const startChallenge = useStore((state) => state.startChallenge);
   const navigate = useNavigate();
-  const { hobbies } = useUserHobbies();
+  const { dailyChallenges, loading } = useChallenges();
+  const [showAllChallenges, setShowAllChallenges] = useState(false);
   const [profileData, setProfileData] = useState({
     currentStreak: 0,
     totalSessions: 0,
     badgesCount: 0,
   });
+
+  const randomQuote = useMemo(() => {
+    return motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
+  }, []);
 
   useEffect(() => {
     async function fetchProfileData() {
@@ -94,18 +77,29 @@ export default function Home() {
     fetchProfileData();
   }, [authUser]);
 
-  const userHobbyCategories = useMemo(() => {
-    return new Set(hobbies.map(h => h.category.toLowerCase()));
-  }, [hobbies]);
+  // Show first 4 challenges by default, 14 when expanded
+  const visibleChallenges = useMemo(() => {
+    if (showAllChallenges) {
+      return dailyChallenges.slice(0, 14);
+    }
+    return dailyChallenges.slice(0, 4);
+  }, [dailyChallenges, showAllChallenges]);
 
-  const filteredChallenges = useMemo(() => {
-    if (userHobbyCategories.size === 0) return mockChallenges;
-    return mockChallenges.filter(c => userHobbyCategories.has(c.category));
-  }, [userHobbyCategories]);
-  
-  const handleStartChallenge = (challenge: typeof mockChallenges[0]) => {
-    startChallenge(challenge);
+  const handleStartChallenge = (challenge: Challenge) => {
+    startChallenge({
+      id: challenge.id,
+      title: challenge.title,
+      description: challenge.description,
+      category: challenge.category as 'music' | 'art' | 'writing' | 'dance' | 'coding' | 'photography' | 'fitness' | 'cooking' | 'gaming' | 'design',
+      duration: challenge.duration,
+      difficulty: challenge.difficulty,
+      points: challenge.points,
+    });
     navigate('/challenge');
+  };
+
+  const toggleViewAll = () => {
+    setShowAllChallenges(!showAllChallenges);
   };
   
   return (
@@ -121,6 +115,24 @@ export default function Home() {
           <p className="text-lg text-muted-foreground">
             Your daily dose of inspiration awaits
           </p>
+        </motion.div>
+
+        {/* Motivational Quote Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+        >
+          <GlassCard className="relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/10 to-secondary/10" />
+            <div className="relative py-8 px-6 text-center">
+              <Sparkles className="w-8 h-8 mx-auto mb-4 text-primary animate-pulse" />
+              <blockquote className="text-2xl md:text-3xl lg:text-4xl font-display font-bold text-foreground leading-tight">
+                "{randomQuote}"
+              </blockquote>
+              <p className="mt-4 text-sm text-muted-foreground">Daily Motivation</p>
+            </div>
+          </GlassCard>
         </motion.div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -162,71 +174,117 @@ export default function Home() {
                 Today's Challenges
               </h2>
               <p className="text-muted-foreground">
-                Handpicked for your creative journey
+                Handpicked for your creative journey ({dailyChallenges.length} available)
               </p>
             </div>
-            <Button variant="outline" className="glass">
-              View All
-            </Button>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {filteredChallenges.length === 0 ? (
-              <GlassCard className="col-span-2 text-center py-12">
-                <Sparkles className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-                <h3 className="text-xl font-display font-semibold mb-2">
-                  No challenges match your hobbies yet
-                </h3>
-                <p className="text-muted-foreground">
-                  Update your hobbies in profile settings to see personalized challenges
-                </p>
-              </GlassCard>
-            ) : (
-              filteredChallenges.map((challenge, index) => (
-              <motion.div
-                key={challenge.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
+            {dailyChallenges.length > 4 && (
+              <Button 
+                variant="outline" 
+                className="glass"
+                onClick={toggleViewAll}
               >
-                <GlassCard hover className="h-full">
-                  <div className="flex flex-col h-full">
-                    <div className="flex items-start justify-between mb-4">
-                      <Badge className={categoryColors[challenge.category]}>
-                        {challenge.category}
-                      </Badge>
-                      <Badge variant="outline" className="glass">
-                        <Clock className="w-3 h-3 mr-1" />
-                        {challenge.duration} min
-                      </Badge>
-                    </div>
-                    
-                    <h3 className="text-xl font-display font-semibold mb-2">
-                      {challenge.title}
-                    </h3>
-                    <p className="text-muted-foreground mb-4 flex-grow">
-                      {challenge.description}
-                    </p>
-                    
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Sparkles className="w-4 h-4" />
-                        <span>{challenge.participants} joined today</span>
-                      </div>
-                      <Button
-                        onClick={() => handleStartChallenge(challenge)}
-                        className="bg-gradient-primary hover:opacity-90 text-primary-foreground"
-                      >
-                        <Play className="w-4 h-4 mr-2" />
-                        Start
-                      </Button>
-                    </div>
-                  </div>
-                </GlassCard>
-              </motion.div>
-              ))
+                {showAllChallenges ? (
+                  <>
+                    Show Less
+                    <ChevronUp className="w-4 h-4 ml-2" />
+                  </>
+                ) : (
+                  <>
+                    View All
+                    <ChevronDown className="w-4 h-4 ml-2" />
+                  </>
+                )}
+              </Button>
             )}
           </div>
+          
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[1, 2, 3, 4].map((i) => (
+                <GlassCard key={i} className="h-48 animate-pulse">
+                  <div className="h-full bg-muted/20 rounded-lg" />
+                </GlassCard>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <AnimatePresence mode="popLayout">
+                {visibleChallenges.length === 0 ? (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="col-span-2"
+                  >
+                    <GlassCard className="text-center py-12">
+                      <Sparkles className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
+                      <h3 className="text-xl font-display font-semibold mb-2">
+                        No challenges match your hobbies yet
+                      </h3>
+                      <p className="text-muted-foreground mb-4">
+                        Update your hobbies in profile settings to see personalized challenges
+                      </p>
+                      <Button 
+                        variant="outline" 
+                        onClick={() => navigate('/challenges')}
+                      >
+                        Browse All Challenges
+                      </Button>
+                    </GlassCard>
+                  </motion.div>
+                ) : (
+                  visibleChallenges.map((challenge, index) => (
+                    <motion.div
+                      key={challenge.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ delay: index * 0.05 }}
+                      layout
+                    >
+                      <GlassCard hover className="h-full">
+                        <div className="flex flex-col h-full">
+                          <div className="flex items-start justify-between mb-4">
+                            <Badge className={categoryColors[challenge.category] || 'bg-muted text-muted-foreground'}>
+                              {challenge.category}
+                            </Badge>
+                            <div className="flex gap-2">
+                              <Badge variant="outline" className="glass">
+                                <Clock className="w-3 h-3 mr-1" />
+                                {challenge.duration} min
+                              </Badge>
+                              <Badge variant="outline" className="glass text-xs">
+                                {challenge.points} pts
+                              </Badge>
+                            </div>
+                          </div>
+                          
+                          <h3 className="text-xl font-display font-semibold mb-2">
+                            {challenge.title}
+                          </h3>
+                          <p className="text-muted-foreground mb-4 flex-grow line-clamp-2">
+                            {challenge.description}
+                          </p>
+                          
+                          <div className="flex items-center justify-between">
+                            <Badge variant="secondary" className="text-xs capitalize">
+                              {challenge.difficulty}
+                            </Badge>
+                            <Button
+                              onClick={() => handleStartChallenge(challenge)}
+                              className="bg-gradient-primary hover:opacity-90 text-primary-foreground"
+                            >
+                              <Play className="w-4 h-4 mr-2" />
+                              Start
+                            </Button>
+                          </div>
+                        </div>
+                      </GlassCard>
+                    </motion.div>
+                  ))
+                )}
+              </AnimatePresence>
+            </div>
+          )}
         </div>
       </div>
     </div>
