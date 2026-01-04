@@ -531,6 +531,7 @@ export type Database = {
         | "cooking"
         | "gaming"
         | "design"
+        | "studies"
       challenge_type: "daily" | "weekly" | "personal"
       difficulty_level: "beginner" | "moderate" | "expert"
       user_status: "online" | "away" | "busy" | "offline"
@@ -673,6 +674,7 @@ export const Constants = {
         "cooking",
         "gaming",
         "design",
+        "studies",
       ],
       challenge_type: ["daily", "weekly", "personal"],
       difficulty_level: ["beginner", "moderate", "expert"],
