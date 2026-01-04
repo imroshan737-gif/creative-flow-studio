@@ -50,10 +50,13 @@ export function useChallenges() {
       const completedIds = completed?.map(c => c.challenge_id) || [];
       setCompletedChallengeIds(completedIds);
 
-      // Get user's hobby categories
-      const userCategories = new Set(hobbies.map(h => h.category.toLowerCase()));
+      // Get user's hobby categories - STRICT FILTERING
+      // Map hobby categories to challenge categories (lowercase)
+      const userCategories = new Set(
+        hobbies.map(h => h.category.toLowerCase())
+      );
 
-      // Transform and filter challenges
+      // Transform challenges
       const transformedChallenges: Challenge[] = (dbChallenges || []).map(c => ({
         id: c.id,
         title: c.title,
@@ -66,10 +69,15 @@ export function useChallenges() {
         isCompleted: completedIds.includes(c.id),
       }));
 
-      // Filter by user hobbies (if they have hobbies selected)
+      // STRICT FILTER: Only show challenges matching user's selected hobbies
+      // If user has no hobbies, show NO challenges (they need to select hobbies first)
       const filterByHobbies = (challenges: Challenge[]) => {
-        if (userCategories.size === 0) return challenges;
-        return challenges.filter(c => userCategories.has(c.category));
+        if (userCategories.size === 0) {
+          // No hobbies selected = no challenges shown
+          return [];
+        }
+        // Only include challenges where the category matches a user's hobby
+        return challenges.filter(c => userCategories.has(c.category.toLowerCase()));
       };
 
       // Separate by type and filter out completed ones

@@ -21,6 +21,7 @@ const categoryColors: Record<string, string> = {
   cooking: 'bg-chart-4/10 text-chart-4 border-chart-4/20',
   gaming: 'bg-chart-5/10 text-chart-5 border-chart-5/20',
   design: 'bg-secondary/10 text-secondary border-secondary/20',
+  studies: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
 };
 
 const motivationalQuotes = [
@@ -90,7 +91,7 @@ export default function Home() {
       id: challenge.id,
       title: challenge.title,
       description: challenge.description,
-      category: challenge.category as 'music' | 'art' | 'writing' | 'dance' | 'coding' | 'photography' | 'fitness' | 'cooking' | 'gaming' | 'design',
+      category: challenge.category as 'music' | 'art' | 'writing' | 'dance' | 'coding' | 'photography' | 'fitness' | 'cooking' | 'gaming' | 'design' | 'studies',
       duration: challenge.duration,
       difficulty: challenge.difficulty,
       points: challenge.points,

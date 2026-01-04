@@ -6,9 +6,11 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import ThreeScene from "@/components/ThreeScene";
 import Header from "@/components/Header";
+import AIChatbot from "@/components/AIChatbot";
 
 // Pages
 import Auth from "./pages/Auth";
+import Landing from "./pages/Landing";
 import UpdatedOnboarding from "./pages/UpdatedOnboarding";
 import Onboarding from "./pages/Onboarding";
 import Home from "./pages/Home";
@@ -57,8 +59,13 @@ const App = () => {
         <Sonner />
         <ThreeScene />
         {user && <Header />}
+        {user && <AIChatbot />}
         <Routes>
-          <Route path="/" element={user ? <Navigate to="/onboarding" replace /> : <Auth />} />
+          {/* Public routes */}
+          <Route path="/" element={user ? <Navigate to="/home" replace /> : <Landing />} />
+          <Route path="/auth" element={user ? <Navigate to="/home" replace /> : <Auth />} />
+          
+          {/* Protected routes */}
           <Route
             path="/onboarding"
             element={
