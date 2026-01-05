@@ -287,6 +287,26 @@ export default function Home() {
             </div>
           )}
         </div>
+        
+        {/* Stress Support Link */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="text-center pt-8 pb-4"
+        >
+          <p className="text-muted-foreground text-sm">
+            Not able to manage stress?{' '}
+            <a 
+              href="https://guardian-aura-72.lovable.app" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-primary hover:text-primary/80 underline underline-offset-2 transition-colors"
+            >
+              Click here
+            </a>
+          </p>
+        </motion.div>
       </div>
     </div>
   );

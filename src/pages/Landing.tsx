@@ -1,9 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { 
-  Sparkles, Music, Palette, PenTool, Zap, Play, Trophy, Users, Target, 
-  Clock, Flame, ChevronDown, Brain, BookOpen, Camera, Code, Dumbbell,
-  ArrowRight, Star, Check
+  Sparkles, Music, Palette, PenTool, Target, Trophy,
+  Clock, ChevronDown, Brain, BookOpen, Code, Dumbbell, Check
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
@@ -14,37 +13,31 @@ const features = [
     icon: Brain,
     title: 'Studies & Learning',
     description: 'Master math, science, languages with focused micro-challenges',
-    gradient: 'from-blue-500 to-cyan-500',
   },
   {
     icon: Music,
     title: 'Musical Mastery',
-    description: '10-minute focused practice sessions with AI feedback',
-    gradient: 'from-purple-500 to-pink-500',
+    description: 'Focused practice sessions with AI feedback',
   },
   {
     icon: Palette,
     title: 'Artistic Expression',
     description: 'Daily creative prompts to unlock your inner artist',
-    gradient: 'from-orange-500 to-red-500',
   },
   {
     icon: Code,
     title: 'Coding Excellence',
     description: 'Build real projects through bite-sized challenges',
-    gradient: 'from-green-500 to-emerald-500',
   },
   {
     icon: PenTool,
     title: 'Writing Brilliance',
     description: 'Micro-challenges to sharpen your storytelling',
-    gradient: 'from-yellow-500 to-orange-500',
   },
   {
     icon: Dumbbell,
     title: 'Fitness Goals',
     description: 'Short workouts and wellness challenges',
-    gradient: 'from-red-500 to-pink-500',
   },
 ];
 
@@ -133,20 +126,19 @@ export default function Landing() {
             <span className="text-2xl font-display font-bold gradient-text">MicroMuse</span>
           </motion.div>
           
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <Button 
-              variant="ghost" 
-              className="hidden md:flex"
-              onClick={() => navigate('/auth')}
+              variant="outline" 
+              className="glass border-border/50 hover:bg-muted/50"
+              onClick={() => navigate('/auth?mode=login')}
             >
-              Sign In
+              Log In
             </Button>
             <Button 
-              className="bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white"
-              onClick={() => navigate('/auth')}
+              className="bg-primary hover:bg-primary/90 text-primary-foreground"
+              onClick={() => navigate('/auth?mode=signup')}
             >
-              Get Started Free
-              <ArrowRight className="w-4 h-4 ml-2" />
+              Sign Up
             </Button>
           </div>
         </div>
@@ -154,45 +146,6 @@ export default function Landing() {
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center pt-20 px-4 overflow-hidden">
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 pointer-events-none">
-          <motion.div 
-            style={{ y: y1 }}
-            className="absolute top-20 left-[10%]"
-          >
-            <FloatingElement delay={0}>
-              <div className="w-20 h-20 rounded-2xl bg-gradient-to-r from-primary/30 to-accent/30 backdrop-blur-xl border border-white/10" />
-            </FloatingElement>
-          </motion.div>
-          
-          <motion.div 
-            style={{ y: y2 }}
-            className="absolute top-40 right-[15%]"
-          >
-            <FloatingElement delay={1} duration={8}>
-              <div className="w-32 h-32 rounded-full bg-gradient-to-r from-secondary/20 to-primary/20 backdrop-blur-xl border border-white/10" />
-            </FloatingElement>
-          </motion.div>
-          
-          <motion.div 
-            style={{ y: y1 }}
-            className="absolute bottom-40 left-[20%]"
-          >
-            <FloatingElement delay={2} duration={7}>
-              <div className="w-16 h-16 rounded-xl bg-gradient-to-r from-accent/30 to-secondary/30 backdrop-blur-xl border border-white/10 rotate-45" />
-            </FloatingElement>
-          </motion.div>
-          
-          <motion.div 
-            style={{ y: y2 }}
-            className="absolute bottom-20 right-[10%]"
-          >
-            <FloatingElement delay={0.5} duration={5}>
-              <div className="w-24 h-24 rounded-3xl bg-gradient-to-r from-primary/20 to-secondary/20 backdrop-blur-xl border border-white/10" />
-            </FloatingElement>
-          </motion.div>
-        </div>
-
         <motion.div
           style={{ opacity }}
           className="text-center max-w-5xl mx-auto space-y-8 relative z-10"
@@ -203,8 +156,8 @@ export default function Landing() {
             transition={{ delay: 0.2, duration: 0.5 }}
             className="inline-flex items-center gap-2 glass px-6 py-3 rounded-full"
           >
-            <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
-            <span className="text-sm font-medium">Trusted by learners worldwide</span>
+            <Sparkles className="w-5 h-5 text-primary" />
+            <span className="text-sm font-medium text-foreground/80">Your daily creative companion</span>
           </motion.div>
           
           <motion.h1 
@@ -213,9 +166,9 @@ export default function Landing() {
             transition={{ delay: 0.3 }}
             className="text-5xl md:text-7xl lg:text-8xl font-display font-bold leading-tight"
           >
-            <span className="gradient-text">Master Any Skill</span>
+            <span className="text-foreground">Show Up Daily,</span>
             <br />
-            <span className="text-foreground">In Just 10 Minutes</span>
+            <span className="text-primary">Grow Forever</span>
           </motion.h1>
           
           <motion.p 
@@ -224,8 +177,8 @@ export default function Landing() {
             transition={{ delay: 0.4 }}
             className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto"
           >
-            From <span className="text-primary font-semibold">Studies</span> to <span className="text-secondary font-semibold">Music</span>, <span className="text-accent font-semibold">Coding</span> to <span className="text-primary font-semibold">Art</span> — 
-            personalized daily challenges that match YOUR interests. No generic content, just what you love.
+            Small consistent steps build lasting habits. Nurture your passions with personalized daily challenges—
+            one moment at a time, one day at a time.
           </motion.p>
           
           <motion.div 
@@ -236,10 +189,10 @@ export default function Landing() {
           >
             <Button
               size="lg"
-              className="bg-gradient-to-r from-primary via-accent to-secondary hover:opacity-90 text-white text-lg px-10 py-7 rounded-2xl shadow-2xl shadow-primary/30 transition-all hover:scale-105 hover:shadow-primary/50"
-              onClick={() => navigate('/auth')}
+              className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-10 py-7 rounded-xl transition-all hover:scale-105"
+              onClick={() => navigate('/auth?mode=signup')}
             >
-              <Sparkles className="w-6 h-6 mr-2" />
+              <Sparkles className="w-5 h-5 mr-2" />
               Start Your Journey — It's Free
             </Button>
           </motion.div>
@@ -311,15 +264,14 @@ export default function Landing() {
                 whileHover={{ y: -8, scale: 1.02 }}
                 className="group"
               >
-                <GlassCard className="h-full relative overflow-hidden">
-                  <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
-                    <feature.icon className="w-8 h-8 text-white" />
+                <GlassCard className="h-full">
+                  <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                    <feature.icon className="w-7 h-7 text-primary" />
                   </div>
-                  <h3 className="text-2xl font-display font-semibold mb-3">
+                  <h3 className="text-xl font-display font-semibold mb-2 text-foreground">
                     {feature.title}
                   </h3>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground text-sm">
                     {feature.description}
                   </p>
                 </GlassCard>
@@ -364,12 +316,12 @@ export default function Landing() {
                 
                 <div className="text-center">
                   <motion.div 
-                    className="w-24 h-24 rounded-3xl bg-gradient-to-br from-primary to-accent flex items-center justify-center mx-auto mb-6 relative"
-                    whileHover={{ rotate: [0, -10, 10, 0], scale: 1.1 }}
-                    transition={{ duration: 0.5 }}
+                    className="w-20 h-20 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto mb-6 relative"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.3 }}
                   >
-                    <item.icon className="w-10 h-10 text-white" />
-                    <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-background border-2 border-primary flex items-center justify-center text-sm font-bold">
+                    <item.icon className="w-9 h-9 text-primary" />
+                    <div className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">
                       {item.step}
                     </div>
                   </motion.div>
@@ -418,8 +370,8 @@ export default function Landing() {
                     transition={{ delay: i * 0.1 }}
                     className="flex items-center gap-3"
                   >
-                    <div className="w-6 h-6 rounded-full bg-gradient-to-r from-primary to-accent flex items-center justify-center flex-shrink-0">
-                      <Check className="w-4 h-4 text-white" />
+                    <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
+                      <Check className="w-3 h-3 text-primary-foreground" />
                     </div>
                     <span className="text-lg">{benefit}</span>
                   </motion.div>
@@ -433,7 +385,7 @@ export default function Landing() {
               viewport={{ once: true }}
               className="relative"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 rounded-3xl blur-3xl" />
+              
               <GlassCard className="relative">
                 <div className="space-y-4">
                   <div className="flex items-center gap-3 p-4 rounded-xl bg-primary/10 border border-primary/20">
@@ -443,15 +395,15 @@ export default function Landing() {
                       <p className="text-sm text-muted-foreground">10 min • Beginner • 15 pts</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 p-4 rounded-xl bg-secondary/10 border border-secondary/20">
-                    <Code className="w-8 h-8 text-secondary" />
+                  <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/50 border border-border">
+                    <Code className="w-8 h-8 text-primary" />
                     <div>
                       <p className="font-semibold">Build a Mini Calculator</p>
                       <p className="text-sm text-muted-foreground">15 min • Moderate • 25 pts</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 p-4 rounded-xl bg-accent/10 border border-accent/20">
-                    <BookOpen className="w-8 h-8 text-accent" />
+                  <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/50 border border-border">
+                    <BookOpen className="w-8 h-8 text-primary" />
                     <div>
                       <p className="font-semibold">Speed Reading Challenge</p>
                       <p className="text-sm text-muted-foreground">10 min • Beginner • 10 pts</p>
@@ -468,34 +420,42 @@ export default function Landing() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-32 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/10 to-secondary/10" />
-        
+      <section className="py-32 px-4">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="container mx-auto max-w-4xl text-center relative"
+          className="container mx-auto max-w-4xl text-center"
         >
-          <h2 className="text-4xl md:text-6xl font-display font-bold mb-6">
-            Ready to <span className="gradient-text">Transform</span> Your Skills?
+          <h2 className="text-4xl md:text-5xl font-display font-bold mb-6 text-foreground">
+            Ready to Build Lasting Habits?
           </h2>
-          <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
-            Join thousands of learners who are mastering new skills in just 10 minutes a day. 
-            Your personalized journey starts now.
+          <p className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto">
+            Small consistent efforts compound into remarkable growth. 
+            Start your personalized journey today.
           </p>
           
-          <Button
-            size="lg"
-            className="bg-gradient-to-r from-primary via-accent to-secondary hover:opacity-90 text-white text-xl px-12 py-8 rounded-2xl shadow-2xl shadow-primary/30 transition-all hover:scale-105"
-            onClick={() => navigate('/auth')}
-          >
-            <Sparkles className="w-6 h-6 mr-2" />
-            Start Free Today
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              size="lg"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-10 py-6 rounded-xl"
+              onClick={() => navigate('/auth?mode=signup')}
+            >
+              <Sparkles className="w-5 h-5 mr-2" />
+              Get Started Free
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="glass text-lg px-10 py-6 rounded-xl"
+              onClick={() => navigate('/auth?mode=login')}
+            >
+              Log In
+            </Button>
+          </div>
           
           <p className="text-sm text-muted-foreground mt-6">
-            No credit card required • Free forever plan • Cancel anytime
+            No credit card required • Free forever
           </p>
         </motion.div>
       </section>
@@ -521,19 +481,8 @@ export default function Landing() {
 }
 
 function Badge({ hobby }: { hobby: string }) {
-  const colors: Record<string, string> = {
-    Studies: 'from-blue-500 to-cyan-500',
-    Music: 'from-purple-500 to-pink-500',
-    Art: 'from-orange-500 to-red-500',
-    Coding: 'from-green-500 to-emerald-500',
-    Writing: 'from-yellow-500 to-orange-500',
-    Fitness: 'from-red-500 to-pink-500',
-    Dance: 'from-pink-500 to-purple-500',
-    Photography: 'from-indigo-500 to-blue-500',
-  };
-  
   return (
-    <span className={`px-4 py-2 rounded-full bg-gradient-to-r ${colors[hobby] || 'from-primary to-accent'} text-white text-sm font-medium shadow-lg`}>
+    <span className="px-4 py-2 rounded-full bg-primary/10 text-primary border border-primary/20 text-sm font-medium">
       {hobby}
     </span>
   );
