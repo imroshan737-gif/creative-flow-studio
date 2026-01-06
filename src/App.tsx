@@ -7,6 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import ThreeScene from "@/components/ThreeScene";
 import Header from "@/components/Header";
 import AIChatbot from "@/components/AIChatbot";
+import StressSupportLink from "@/components/StressSupportLink";
 
 // Pages
 import Auth from "./pages/Auth";
@@ -60,6 +61,7 @@ const App = () => {
         <ThreeScene />
         {user && <Header />}
         {user && <AIChatbot />}
+        {user && <StressSupportLink />}
         <Routes>
           {/* Public routes */}
           <Route path="/" element={user ? <Navigate to="/home" replace /> : <Landing />} />

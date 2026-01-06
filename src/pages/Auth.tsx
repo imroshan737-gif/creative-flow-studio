@@ -9,6 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { z } from 'zod';
 import { toast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 // Validation schemas
 const signInSchema = z.object({
@@ -56,7 +57,21 @@ export default function Auth() {
         const validated = signInSchema.parse({ email, password });
         const { error } = await signIn(validated.email, validated.password);
         if (!error) {
-          navigate('/onboarding');
+          // Check if user has completed onboarding (has hobbies selected)
+          const { data: session } = await supabase.auth.getSession();
+          if (session?.session?.user) {
+            const { data: userHobbies } = await supabase
+              .from('user_hobbies')
+              .select('id')
+              .eq('user_id', session.session.user.id)
+              .limit(1);
+            
+            if (userHobbies && userHobbies.length > 0) {
+              navigate('/home');
+            } else {
+              navigate('/onboarding');
+            }
+          }
         }
       } else {
         // Validate sign-up input
