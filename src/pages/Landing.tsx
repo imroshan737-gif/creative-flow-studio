@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
 import GlassCard from '@/components/GlassCard';
 import LandingFooter from '@/components/LandingFooter';
+import TypewriterText from '@/components/TypewriterText';
 
 const features = [
   {
@@ -169,7 +170,12 @@ export default function Landing() {
           >
             <span className="text-foreground">Show Up Daily,</span>
             <br />
-            <span className="text-primary">Grow Forever</span>
+            <TypewriterText 
+              text="Grow Forever" 
+              delay={800} 
+              speed={100} 
+              className="text-primary"
+            />
           </motion.h1>
           
           <motion.p 
