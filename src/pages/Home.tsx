@@ -79,24 +79,12 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       <div className="flex-1 pb-12 px-4 relative overflow-hidden">
-        {/* Ambient animated orbs */}
+        {/* Quiet ambient light */}
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-          <motion.div
-            className="absolute -top-32 -left-24 w-[28rem] h-[28rem] rounded-full bg-primary/20 blur-3xl"
-            animate={{ x: [0, 40, 0], y: [0, 30, 0] }}
-            transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }}
-          />
-          <motion.div
-            className="absolute top-40 -right-32 w-[26rem] h-[26rem] rounded-full bg-accent/20 blur-3xl"
-            animate={{ x: [0, -30, 0], y: [0, 40, 0] }}
-            transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut' }}
-          />
-          <motion.div
-            className="absolute bottom-0 left-1/3 w-[22rem] h-[22rem] rounded-full bg-secondary/20 blur-3xl"
-            animate={{ x: [0, 20, 0], y: [0, -30, 0] }}
-            transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
-          />
+          <div className="absolute -top-40 left-1/4 w-[36rem] h-[36rem] rounded-full bg-primary/[0.06] blur-[140px]" />
+          <div className="absolute bottom-0 right-0 w-[28rem] h-[28rem] rounded-full bg-primary/[0.04] blur-[140px]" />
         </div>
+
         <div className="container mx-auto max-w-5xl">
 
           {/* Hero Section */}
