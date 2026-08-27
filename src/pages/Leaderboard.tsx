@@ -274,7 +274,7 @@ export default function Leaderboard() {
                   <Button
                     variant="outline"
                     size="icon"
-                    className="w-9 h-9 glass border-white/20 hover:bg-white/10 disabled:opacity-30"
+                    className="w-9 h-9 glass border-border/60 hover:bg-muted/50 disabled:opacity-30"
                     onClick={() => goToPage(currentPage - 1)}
                     disabled={currentPage === 1}
                   >
@@ -292,7 +292,7 @@ export default function Leaderboard() {
                         className={`w-9 h-9 border transition-all duration-200 ${
                           page === currentPage 
                             ? 'bg-primary/20 border-primary text-primary font-bold shadow-[0_0_10px_hsl(var(--primary)/0.3)]' 
-                            : 'glass border-white/20 hover:bg-white/10 text-muted-foreground'
+                            : 'glass border-border/60 hover:bg-muted/50 text-muted-foreground'
                         }`}
                         onClick={() => goToPage(page)}
                       >
@@ -304,7 +304,7 @@ export default function Leaderboard() {
                   <Button
                     variant="outline"
                     size="icon"
-                    className="w-9 h-9 glass border-white/20 hover:bg-white/10 disabled:opacity-30"
+                    className="w-9 h-9 glass border-border/60 hover:bg-muted/50 disabled:opacity-30"
                     onClick={() => goToPage(currentPage + 1)}
                     disabled={currentPage === totalPages}
                   >

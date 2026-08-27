@@ -560,7 +560,7 @@ export default function Challenge() {
                   size="lg"
                   variant={isRecording ? 'destructive' : 'default'}
                   onClick={handleRecord}
-                  className={!isRecording ? 'bg-gradient-secondary text-white hover:opacity-90' : ''}
+                  className={!isRecording ? 'bg-secondary text-secondary-foreground hover:bg-secondary/80' : ''}
                 >
                   <Mic className="w-5 h-5 mr-2" />
                   {isRecording ? 'Stop Recording' : 'Record'}
