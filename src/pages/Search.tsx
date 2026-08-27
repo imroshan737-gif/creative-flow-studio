@@ -169,7 +169,7 @@ function UserProfileView({ profile, currentUserId, onBack }: { profile: SearchRe
           <p className="text-xs text-muted-foreground">Best Streak</p>
         </GlassCard>
         <GlassCard className="p-4 text-center">
-          <Calendar className="w-5 h-5 mx-auto text-blue-500 mb-1" />
+          <Calendar className="w-5 h-5 mx-auto text-primary mb-1" />
           <p className="text-xl font-bold">{profile.total_sessions || 0}</p>
           <p className="text-xs text-muted-foreground">Sessions</p>
         </GlassCard>

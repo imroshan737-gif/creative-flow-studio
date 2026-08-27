@@ -280,7 +280,7 @@ export default function EditProfile() {
               )}
             </div>
             {usernameAvailable === true && (
-              <p className="text-sm text-green-500">Username available!</p>
+              <p className="text-sm text-primary">Username available!</p>
             )}
             {usernameAvailable === false && (
               <p className="text-sm text-destructive">Username already taken</p>

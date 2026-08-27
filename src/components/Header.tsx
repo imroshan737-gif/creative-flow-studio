@@ -101,7 +101,7 @@ export default function Header() {
             className="flex items-center justify-center h-8 w-8 rounded-full bg-orange-500 hover:bg-orange-400 ring-2 ring-white transition-all duration-200"
             aria-label="Open music player"
           >
-            <Music className="w-4 h-4 text-white" />
+            <Music className="w-4 h-4 text-primary-foreground" />
           </button>
 
           <DropdownMenu>

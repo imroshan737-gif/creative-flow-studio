@@ -61,7 +61,7 @@ export default function AuthenticatedHeader() {
           className="flex items-center justify-center w-8 h-8 rounded-full bg-orange-500 hover:bg-orange-400 ring-2 ring-white transition-all duration-200"
           aria-label="Open music player"
         >
-          <Music className="w-4 h-4 text-white" />
+          <Music className="w-4 h-4 text-primary-foreground" />
         </button>
 
         <DropdownMenu>

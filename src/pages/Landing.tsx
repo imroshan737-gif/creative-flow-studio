@@ -11,12 +11,12 @@ import LandingFooter from '@/components/LandingFooter';
 import TypewriterText from '@/components/TypewriterText';
 
 const features = [
-  { icon: Brain, title: 'Studies & Learning', description: 'Master math, science, languages with focused micro-challenges', gradient: 'from-blue-500/20 to-cyan-500/20', accent: 'text-blue-400' },
-  { icon: Music, title: 'Musical Mastery', description: 'Focused practice sessions with AI feedback', gradient: 'from-violet-500/20 to-purple-500/20', accent: 'text-violet-400' },
-  { icon: Palette, title: 'Artistic Expression', description: 'Daily creative prompts to unlock your inner artist', gradient: 'from-pink-500/20 to-rose-500/20', accent: 'text-pink-400' },
-  { icon: Code, title: 'Coding Excellence', description: 'Build real projects through bite-sized challenges', gradient: 'from-emerald-500/20 to-teal-500/20', accent: 'text-emerald-400' },
-  { icon: PenTool, title: 'Writing Brilliance', description: 'Micro-challenges to sharpen your storytelling', gradient: 'from-amber-500/20 to-orange-500/20', accent: 'text-amber-400' },
-  { icon: Dumbbell, title: 'Fitness Goals', description: 'Short workouts and wellness challenges', gradient: 'from-red-500/20 to-orange-500/20', accent: 'text-red-400' },
+  { icon: Brain, title: 'Studies & Learning', description: 'Master math, science, languages with focused micro-challenges' },
+  { icon: Music, title: 'Musical Mastery', description: 'Focused practice sessions with AI feedback' },
+  { icon: Palette, title: 'Artistic Expression', description: 'Daily creative prompts to unlock your inner artist' },
+  { icon: Code, title: 'Coding Excellence', description: 'Build real projects through bite-sized challenges' },
+  { icon: PenTool, title: 'Writing Brilliance', description: 'Micro-challenges to sharpen your storytelling' },
+  { icon: Dumbbell, title: 'Fitness Goals', description: 'Short workouts and wellness challenges' },
 ];
 
 const howItWorks = [
@@ -27,11 +27,12 @@ const howItWorks = [
 ];
 
 const highlights = [
-  { icon: Zap, title: 'Micro Challenges', desc: 'Bite-sized daily tasks that fit any schedule', gradient: 'from-amber-500 to-orange-500' },
-  { icon: Shield, title: 'E2E Encrypted', desc: 'Your data stays private with zero-knowledge security', gradient: 'from-emerald-500 to-teal-500' },
-  { icon: Brain, title: 'AI-Powered', desc: 'Smart personalization that adapts to your growth', gradient: 'from-violet-500 to-purple-500' },
-  { icon: Trophy, title: 'Streak System', desc: 'Build consistency with gamified progress tracking', gradient: 'from-pink-500 to-rose-500' },
+  { icon: Zap, title: 'Micro Challenges', desc: 'Bite-sized daily tasks that fit any schedule' },
+  { icon: Shield, title: 'E2E Encrypted', desc: 'Your data stays private with zero-knowledge security' },
+  { icon: Brain, title: 'AI-Powered', desc: 'Smart personalization that adapts to your growth' },
+  { icon: Trophy, title: 'Streak System', desc: 'Build consistency with gamified progress tracking' },
 ];
+
 
 function AnimatedSection({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
   const ref = useRef(null);
@@ -188,10 +189,11 @@ export default function Landing() {
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                   className="relative group rounded-2xl p-5 border border-border/40 bg-card/40 backdrop-blur-sm hover:border-primary/30 transition-colors overflow-hidden"
                 >
-                  <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-[0.07] transition-opacity duration-500`} />
+                  <div className="absolute inset-0 bg-primary opacity-0 group-hover:opacity-[0.05] transition-opacity duration-500" />
                   <div className="relative z-10 flex flex-col items-center text-center gap-3">
-                    <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${item.gradient} flex items-center justify-center shadow-lg`}>
-                      <item.icon className="w-5 h-5 text-white" />
+                    <div className="w-11 h-11 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+                      <item.icon className="w-5 h-5 text-primary" strokeWidth={1.75} />
+
                     </div>
                     <h3 className="text-base font-display font-semibold text-foreground">{item.title}</h3>
                     <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
@@ -224,10 +226,11 @@ export default function Landing() {
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                   className="group relative rounded-2xl p-6 border border-border/40 bg-card/50 backdrop-blur-sm hover:border-primary/30 transition-colors overflow-hidden h-full"
                 >
-                  <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                  <div className="absolute inset-0 bg-primary opacity-0 group-hover:opacity-[0.05] transition-opacity duration-500" />
                   <div className="relative z-10">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                      <feature.icon className={`w-6 h-6 ${feature.accent}`} />
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                      <feature.icon className="w-6 h-6 text-primary" strokeWidth={1.75} />
+
                     </div>
                     <h3 className="text-lg font-display font-semibold mb-2 text-foreground">{feature.title}</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
