@@ -189,10 +189,11 @@ export default function Landing() {
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                   className="relative group rounded-2xl p-5 border border-border/40 bg-card/40 backdrop-blur-sm hover:border-primary/30 transition-colors overflow-hidden"
                 >
-                  <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-[0.07] transition-opacity duration-500`} />
+                  <div className="absolute inset-0 bg-primary opacity-0 group-hover:opacity-[0.05] transition-opacity duration-500" />
                   <div className="relative z-10 flex flex-col items-center text-center gap-3">
-                    <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${item.gradient} flex items-center justify-center shadow-lg`}>
-                      <item.icon className="w-5 h-5 text-white" />
+                    <div className="w-11 h-11 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+                      <item.icon className="w-5 h-5 text-primary" strokeWidth={1.75} />
+
                     </div>
                     <h3 className="text-base font-display font-semibold text-foreground">{item.title}</h3>
                     <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
