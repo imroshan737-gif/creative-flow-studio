@@ -11,12 +11,12 @@ import LandingFooter from '@/components/LandingFooter';
 import TypewriterText from '@/components/TypewriterText';
 
 const features = [
-  { icon: Brain, title: 'Studies & Learning', description: 'Master math, science, languages with focused micro-challenges', gradient: 'from-blue-500/20 to-cyan-500/20', accent: 'text-blue-400' },
-  { icon: Music, title: 'Musical Mastery', description: 'Focused practice sessions with AI feedback', gradient: 'from-violet-500/20 to-purple-500/20', accent: 'text-violet-400' },
-  { icon: Palette, title: 'Artistic Expression', description: 'Daily creative prompts to unlock your inner artist', gradient: 'from-pink-500/20 to-rose-500/20', accent: 'text-pink-400' },
-  { icon: Code, title: 'Coding Excellence', description: 'Build real projects through bite-sized challenges', gradient: 'from-emerald-500/20 to-teal-500/20', accent: 'text-emerald-400' },
-  { icon: PenTool, title: 'Writing Brilliance', description: 'Micro-challenges to sharpen your storytelling', gradient: 'from-amber-500/20 to-orange-500/20', accent: 'text-amber-400' },
-  { icon: Dumbbell, title: 'Fitness Goals', description: 'Short workouts and wellness challenges', gradient: 'from-red-500/20 to-orange-500/20', accent: 'text-red-400' },
+  { icon: Brain, title: 'Studies & Learning', description: 'Master math, science, languages with focused micro-challenges' },
+  { icon: Music, title: 'Musical Mastery', description: 'Focused practice sessions with AI feedback' },
+  { icon: Palette, title: 'Artistic Expression', description: 'Daily creative prompts to unlock your inner artist' },
+  { icon: Code, title: 'Coding Excellence', description: 'Build real projects through bite-sized challenges' },
+  { icon: PenTool, title: 'Writing Brilliance', description: 'Micro-challenges to sharpen your storytelling' },
+  { icon: Dumbbell, title: 'Fitness Goals', description: 'Short workouts and wellness challenges' },
 ];
 
 const howItWorks = [
@@ -27,11 +27,12 @@ const howItWorks = [
 ];
 
 const highlights = [
-  { icon: Zap, title: 'Micro Challenges', desc: 'Bite-sized daily tasks that fit any schedule', gradient: 'from-amber-500 to-orange-500' },
-  { icon: Shield, title: 'E2E Encrypted', desc: 'Your data stays private with zero-knowledge security', gradient: 'from-emerald-500 to-teal-500' },
-  { icon: Brain, title: 'AI-Powered', desc: 'Smart personalization that adapts to your growth', gradient: 'from-violet-500 to-purple-500' },
-  { icon: Trophy, title: 'Streak System', desc: 'Build consistency with gamified progress tracking', gradient: 'from-pink-500 to-rose-500' },
+  { icon: Zap, title: 'Micro Challenges', desc: 'Bite-sized daily tasks that fit any schedule' },
+  { icon: Shield, title: 'E2E Encrypted', desc: 'Your data stays private with zero-knowledge security' },
+  { icon: Brain, title: 'AI-Powered', desc: 'Smart personalization that adapts to your growth' },
+  { icon: Trophy, title: 'Streak System', desc: 'Build consistency with gamified progress tracking' },
 ];
+
 
 function AnimatedSection({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
   const ref = useRef(null);
